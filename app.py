@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request, redirect, session, flash
+from flask import Flask, render_template, request, redirect, session, flash, url_for
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config.from_object('config')
+db = SQLAlchemy(app)
+
+
+from models import Entry
 
 @app.route('/')
 def show_entries():
@@ -32,7 +37,28 @@ def logout():
 if __name__ == '__main__':
   app.run(debug=True)
 
+@app.route('/entries/new')
+def new_entry():
+  if not session.get('logged_in'):
+    return redirect(url_for('login'))
+  return render_template('new.html')
 
+@app.route('/entries', methods=['POST'])
+def add_entry():
+  if not session.get('logged_in'):
+    return redirect(url_for('login'))
+
+  entry = Entry(
+    title=request.form['title'],
+    text=request.form['text']
+  )
+
+  db.session.add(entry)
+  db.session.commit()
+
+  flash('記事が追加されました')
+
+  return redirect(url_for('show_entries'))
 
 # app.logger.debug(app.config['USERNAME'])
 # app.logger.debug(app.config['PASSWORD'])
