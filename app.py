@@ -61,5 +61,12 @@ def add_entry():
 
   return redirect(url_for('show_entries'))
 
+@app.route('/entries/<int:id>')
+def show_entry(id):
+  if not session.get('logged_in'):
+    return redirect(url_for('login'))
+  entry = Entry.query.get(id)
+  return render_template('show.html', entry=entry)
+
 # app.logger.debug(app.config['USERNAME'])
 # app.logger.debug(app.config['PASSWORD'])

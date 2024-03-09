@@ -2,11 +2,12 @@
 {% block body %}
 {% if entries|length > 0 %}
 <div class="card">
-  <ul class="list-group list-group-flush">
-    {% for entry in entries %}
-    <li class="list-group-item">{{ entry.title }}</li>
-    {% endfor %}
-  </ul>
+  {% for entry in entries %}
+  <div class="card-body">
+    <h5 class="card-title">{{ entry.title }}</h5>
+    <a href="{{ url_for('show_entry', id=entry.id) }}" class="card-link">記事を読む</a>
+  </div>
+  {% endfor %}
 </div>
 {% else %}
 <div>記事がありません</div>
