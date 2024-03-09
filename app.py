@@ -68,5 +68,27 @@ def show_entry(id):
   entry = Entry.query.get(id)
   return render_template('show.html', entry=entry)
 
+@app.route('/entries/<int:id>/edit')
+def edit_entry(id):
+  if not session.get('logged_in'):
+    return redirect(url_for('login'))
+  entry = Entry.query.get(id)
+  return render_template('edit.html', entry=entry)
+
+@app.route('/entries/<int:id>/update', methods=['POST'])
+def update_entry(id):
+  if not session.get('logged_in'):
+    return redirect(url_for('login'))
+  entry = Entry.query.get(id)
+  entry.title = request.form['title']
+  entry.text = request.form['text']
+
+  db.session.merge(entry)
+  db.session.commit()
+
+  flash('記事が更新されました')
+
+  return redirect(url_for('show_entries'))
+
 # app.logger.debug(app.config['USERNAME'])
 # app.logger.debug(app.config['PASSWORD'])
