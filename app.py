@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 
 app = Flask(__name__)
-
+app.config.from_object('config')
 
 @app.route('/')
 def show_entries():
@@ -17,3 +17,5 @@ if __name__ == '__main__':
 
 
 
+# app.logger.debug(app.config['USERNAME'])
+# app.logger.debug(app.config['PASSWORD'])
