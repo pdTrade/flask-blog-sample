@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -7,8 +7,16 @@ app.config.from_object('config')
 def show_entries():
   return render_template('index.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+  if request.method == 'POST':
+    if request.form['username'] != app.config['USERNAME']:
+      app.logger.debug('ユーザー名が間違っています')
+    elif request.form['password'] != app.config['PASSWORD']:
+      app.logger.debug('ユーザー名が間違っています')
+    else:
+      return redirect('/')
+
   return render_template('login.html')
 
 
