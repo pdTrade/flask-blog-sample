@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -13,11 +13,12 @@ def show_entries():
 def login():
   if request.method == 'POST':
     if request.form['username'] != app.config['USERNAME']:
-      app.logger.debug('ユーザー名が間違っています')
+      flash('ユーザー名が間違っています')
     elif request.form['password'] != app.config['PASSWORD']:
-      app.logger.debug('ユーザー名が間違っています')
+      flash('ユーザー名が間違っています')
     else:
       session['logged_in'] = True
+      flash('ログインしました')
       return redirect('/')
 
   return render_template('login.html')
@@ -25,6 +26,7 @@ def login():
 @app.route('/logout')
 def logout():
   session.pop('logged_in', None)
+  flash('ログアウトしました')
   return redirect('/')
 
 if __name__ == '__main__':

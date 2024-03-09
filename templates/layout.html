@@ -29,6 +29,12 @@
       </div>
     </nav>
 
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-info">
+      {{ message }}
+    </div>
+    {% endfor %}
+
     <div class="">
       {% block body %}{% endblock %}
     </div>
