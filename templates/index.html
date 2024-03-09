@@ -1,6 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="">
-  home
+{% if entries|length > 0 %}
+<div class="card">
+  <ul class="list-group list-group-flush">
+    {% for entry in entries %}
+    <li class="list-group-item">{{ entry.title }}</li>
+    {% endfor %}
+  </ul>
 </div>
+{% else %}
+<div>記事がありません</div>
+{% endif %}
 {% endblock %}

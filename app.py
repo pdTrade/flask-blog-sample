@@ -12,7 +12,8 @@ from models import Entry
 def show_entries():
   if not session.get('logged_in'):
     return redirect('/login')
-  return render_template('index.html')
+  entries = Entry.query.order_by(Entry.id.desc()).all()
+  return render_template('index.html', entries=entries)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
